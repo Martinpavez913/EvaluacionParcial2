@@ -91,9 +91,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* Header */}
-  
-
       {/* Main Content */}
       <main>
         <section className="banner">

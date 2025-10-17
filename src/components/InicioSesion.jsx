@@ -37,24 +37,6 @@ const InicioSesion = () => {
 
   return (
     <div className="inicio-sesion">
-      {/* Header */}
-      <header>
-        <div className="logo-container">
-          <img src="/Imagenes/logoconfondo.png" alt="Logo ColoColeccionables" className="logo" />  
-        </div>
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/productos">Productos</Link></li>
-            <li><Link to="/nosotros">Nosotros</Link></li>
-            <li><Link to="/blogs">Blogs</Link></li>
-            <li><Link to="/contacto">Contacto</Link></li>
-          </ul>
-        </nav>
-        <div>
-          <Link to="/carrito">Carrito ({cartCount})</Link>
-        </div>
-      </header>
 
       {/* Main Content */}
       <main>

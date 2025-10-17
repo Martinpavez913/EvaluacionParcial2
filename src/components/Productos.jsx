@@ -222,28 +222,6 @@ const Productos = () => {
 
   return (
     <div className="productos">
-      {/* Header */}
-      <header>
-        <div className="logo-container">
-          <img src="/Imagenes/logoconfondo.png" alt="Logo ColoColeccionables" className="logo" />  
-        </div>
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/productos" className="active">Productos</Link></li>
-            <li><Link to="/nosotros">Nosotros</Link></li>
-            <li><Link to="/blogs">Blogs</Link></li>
-            <li><Link to="/contacto">Contacto</Link></li>
-          </ul>
-        </nav>
-        <div className="header-right">
-          <Link to="/carrito" id="carrito-link">Carrito ({cartCount})</Link>
-          <div className="auth-links">
-            <Link to="/inicio-sesion">Iniciar Sesión</Link> | 
-            <Link to="/registro">Registrarse</Link>
-          </div>
-        </div>
-      </header>
 
       <main>
         {/* Sección de Filtros */}
