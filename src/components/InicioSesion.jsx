@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '/src/App.css'; // Según tu nueva ruta
+import '/src/App.css'; 
 
 const InicioSesion = () => {
   const [cartCount, setCartCount] = useState(0);
