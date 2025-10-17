@@ -4,6 +4,7 @@ import Home from './components/Home';
 import InicioSesion from './components/InicioSesion';
 import Contacto from './components/Contacto'
 import Productos from './components/Productos'
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/Productos" element={<Productos />} />
         {/* Aquí agregarás las demás rutas después */}
+      <Footer />
       </Routes>
     </Router>
   );
