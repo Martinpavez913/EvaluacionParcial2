@@ -29,7 +29,7 @@ const Nav = () => {
             Carrito ({cartCount})
           </Link>
           <div className="auth-links">
-            <Link to="/inicio-sesion">Iniciar Sesión</Link> | 
+            <Link to="/inicio-sesion">Iniciar Sesión</Link> |
             <Link to="/registro">Registrarse</Link>
           </div>
         </div>
