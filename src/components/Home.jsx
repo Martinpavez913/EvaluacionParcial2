@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Carrusel from './Carrusel'; // Importa el componente
 import '/src/App.css';
+
 
 const Home = () => {
   
@@ -93,11 +95,13 @@ const Home = () => {
     <div className="home">
       {/* Main Content */}
       <main>
+
         <section className="banner">
           <h2>ColoColeccionables</h2>
           <p>La mejor tienda de objetos coleccionables del equipo más grande de Chile. Encuentra camisetas históricas, banderas, escudos y mucho más.</p>
-          <Link to="/productos" className="btn-primary">Ver productos</Link>
         </section>
+
+        <Carrusel />
 
         <section className="featured-products">
           <h2>Productos Destacados</h2>
