@@ -895,3 +895,296 @@ footer > div:last-child {
 .form-group textarea:focus::placeholder {
   color: #ccc;
 }
+
+/* ESTILOS PÁGINA INICIO SESIÓN */
+.inicio-sesion {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-section {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border: 1px solid #000;
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #000;
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #000;
+}
+
+.login-section > p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* FORMULARIO LOGIN */
+#loginForm {
+  margin-bottom: 2rem;
+}
+
+/* Reutilizamos los estilos del contacto para consistencia */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #000;
+  font-size: 1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* BOTÓN INICIAR SESIÓN */
+.form-group button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+.form-group button:hover {
+  background-color: #fff;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ENLACES ADICIONALES */
+.login-links {
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #ddd;
+}
+
+.login-links p {
+  margin-bottom: 0.8rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.login-links a {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.login-links a:hover {
+  color: #333;
+  border-bottom-color: #000;
+}
+
+/* ESTADOS DE VALIDACIÓN (consistentes con contacto) */
+.form-group input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #dc3545;
+}
+
+.form-group input:valid:not(:focus):not(:placeholder-shown) {
+  border-color: #28a745;
+}
+
+/* ANIMACIONES (consistentes con contacto) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-section {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.form-group {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+
+/* EFECTO HOVER PARA GRUPOS DE FORMULARIO */
+.form-group {
+  transition: transform 0.3s ease;
+}
+
+.form-group:hover {
+  transform: translateX(5px);
+}
+
+/* ESTILOS PARA PLACEHOLDER */
+.form-group input::placeholder {
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.form-group input:focus::placeholder {
+  color: #ccc;
+}
+
+/* MEJORAS ESPECÍFICAS PARA LOGIN */
+.password-field {
+  position: relative;
+}
+
+/* Podrías agregar un botón para mostrar/ocultar contraseña en el futuro */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .login-section {
+    margin: 1rem auto;
+    padding: 2rem;
+    max-width: 90%;
+  }
+  
+  .login-section h2 {
+    font-size: 2rem;
+  }
+  
+  .login-section > p {
+    font-size: 0.95rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+  
+  .form-group input {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+  
+  .form-group button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .login-links {
+    padding: 1rem;
+  }
+  
+  .login-links p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-section {
+    padding: 1.5rem;
+    margin: 0.5rem auto;
+  }
+  
+  .login-section h2 {
+    font-size: 1.8rem;
+  }
+  
+  .login-section > p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .form-group input {
+    padding: 0.6rem;
+  }
+  
+  .form-group button {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .login-links {
+    padding: 0.8rem;
+  }
+  
+  .login-links p {
+    font-size: 0.85rem;
+  }
+}
+
+/* ESTILOS PARA MENSAJES DE ERROR (para futura implementación) */
+.error-message {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.success-message {
+  color: #28a745;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* LOADING STATE (para futura implementación) */
+.form-group button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-group button:disabled:hover {
+  background-color: #666;
+  color: #fff;
+  transform: none;
+  box-shadow: none;
+}
