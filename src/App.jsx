@@ -10,6 +10,7 @@ import Blogs from './components/Blogs';
 import Registro from './components/Registro';
 import DetalleProducto from './components/DetalleProducto';
 import Admin from './components/Admin';
+import AdminAgregarProducto from './components/AdminAgregarProducto';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         
         {/* Rutas de administración (SIN Nav y Footer, ellos tienen su propio diseño) */}
         <Route path="/admin/*" element={<Admin />} />
+        <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
         
         {/* Aquí agregarás las demás rutas después */}
       </Routes>
