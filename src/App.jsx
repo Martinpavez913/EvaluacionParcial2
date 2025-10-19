@@ -12,6 +12,7 @@ import DetalleProducto from './components/DetalleProducto';
 import Admin from './components/Admin';
 import AdminAgregarProducto from './components/AdminAgregarProducto';
 import AdminModificarProducto from './components/AdminModificarProducto';
+import AdminEliminarProducto from './components/AdminEliminarProducto';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/admin/*" element={<Admin />} />
         <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
         <Route path="/admin/productos/editar" element={<AdminModificarProducto />} />
+        <Route path="/admin/productos/eliminar" element={<AdminEliminarProducto />} />
         
         {/* Aquí agregarás las demás rutas después */}
       </Routes>
