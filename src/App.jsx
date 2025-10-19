@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 import Nosotros from './components/Nosotros';
 import Blogs from './components/Blogs';
 import Registro from './components/Registro';
-
+import DetalleProducto from './components/DetalleProducto';
 
 function App() {
   return (
