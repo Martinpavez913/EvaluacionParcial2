@@ -14,21 +14,30 @@ import Admin from './components/Admin';
 function App() {
   return (
     <Router>
-      <Nav />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/inicio-sesion" element={<InicioSesion />} />
-        <Route path="/contacto" element={<Contacto />} />
-        <Route path="/productos" element={<Productos />} />
-        <Route path="/nosotros" element={<Nosotros />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
-        <Route path="/admin/" element={<Admin />} />
+        {/* Rutas públicas (con Nav y Footer) */}
+        <Route path="/*" element={
+          <>
+            <Nav />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/inicio-sesion" element={<InicioSesion />} />
+              <Route path="/contacto" element={<Contacto />} />
+              <Route path="/productos" element={<Productos />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/registro" element={<Registro />} />
+              <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
+            </Routes>
+            <Footer />
+          </>
+        } />
+        
+        {/* Rutas de administración (SIN Nav y Footer, ellos tienen su propio diseño) */}
+        <Route path="/admin/*" element={<Admin />} />
         
         {/* Aquí agregarás las demás rutas después */}
       </Routes>
-      <Footer />
     </Router>
   );
 }
