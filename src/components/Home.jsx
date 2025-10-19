@@ -95,14 +95,7 @@ const Home = () => {
     <div className="home">
       {/* Main Content */}
       <main>
-
-        <section className="banner">
-          <h2>ColoColeccionables</h2>
-          <p>La mejor tienda de objetos coleccionables del equipo más grande de Chile. Encuentra camisetas históricas, banderas, escudos y mucho más.</p>
-        </section>
-
         <Carrusel />
-
         <section className="featured-products">
           <h2>Productos Destacados</h2>
           <div className="products-grid">
