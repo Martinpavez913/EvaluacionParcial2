@@ -9,6 +9,7 @@ import Nosotros from './components/Nosotros';
 import Blogs from './components/Blogs';
 import Registro from './components/Registro';
 
+
 function App() {
   return (
     <Router>
@@ -21,6 +22,8 @@ function App() {
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
+        
         {/* Aquí agregarás las demás rutas después */}
       </Routes>
       <Footer />
