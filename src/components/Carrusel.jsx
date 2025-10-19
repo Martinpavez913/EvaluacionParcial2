@@ -9,16 +9,16 @@ const Carrusel = () => {
   const slides = [
     {
       id: 1,
-      image: "/Imagenes/banner-camiseta-1997.jpg",
+      image: "/Imagenes/fotocarrusel1.jpg",
       alt: "Camiseta Edición Especial 1997",
-      title: "Camiseta Edición 1997",
-      description: "Revive la gloria con nuestra camiseta conmemorativa",
+      title: "Productos de colección",
+      description: "Revisa todos nuestros productos disponibles",
       link: "/productos/1", // Ruta específica del producto
-      buttonText: "Ver Producto"
+      buttonText: "Ver Productos"
     },
     {
       id: 2,
-      image: "/Imagenes/banner-figuras.jpg",
+      image: "/Imagenes/fotocarrusel2.png",
       alt: "Figuras Coleccionables",
       title: "Figuras Exclusivas",
       description: "Colecciona a tus jugadores favoritos",
@@ -27,22 +27,13 @@ const Carrusel = () => {
     },
     {
       id: 3,
-      image: "/Imagenes/banner-ofertas.jpg",
+      image: "/Imagenes/fotocarrusel3.jpg",
       alt: "Ofertas Especiales",
-      title: "Ofertas de Temporada",
-      description: "Hasta 50% de descuento en productos seleccionados",
-      link: "/productos?estado=oferta", // Ruta con filtro
-      buttonText: "Ver Ofertas"
+      title: "Nuestro equipo, nuestra historia",
+      description: "Informate con noticias y articulos de nuestro Blog",
+      link: "/blogs", // Ruta con filtro
+      buttonText: "Ver Blog"
     },
-    {
-      id: 4,
-      image: "/Imagenes/banner-novedades.jpg",
-      alt: "Nuevos Productos",
-      title: "Nuevas Incorporaciones",
-      description: "Descubre los últimos lanzamientos",
-      link: "/productos?estado=nuevo", // Ruta con filtro
-      buttonText: "Ver Novedades"
-    }
   ];
 
   // Auto-avance del carrusel
