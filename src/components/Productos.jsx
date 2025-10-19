@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '/src/App.css';
 
 const Productos = () => {
@@ -10,6 +10,7 @@ const Productos = () => {
     estado: ''
   });
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const location = useLocation();
 
   // Datos de productos
   const productos = [
@@ -141,22 +142,29 @@ const Productos = () => {
     const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
     setCartCount(totalItems);
-    setFilteredProducts(productos);
-  }, []);
+    
+    // Aplicar filtros iniciales (incluyendo búsqueda si existe)
+    aplicarFiltrosYBusqueda();
+  }, [location.search]); // Se ejecuta cuando cambia la URL
 
-  // Manejar cambios en los filtros
-  const handleFilterChange = (e) => {
-    const { id, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [id]: value
-    }));
-  };
-
-  // Aplicar filtros
-  const aplicarFiltros = () => {
+  // Función para aplicar filtros y búsqueda
+  const aplicarFiltrosYBusqueda = () => {
     let resultados = productos;
 
+    // Primero aplicar búsqueda si existe en la URL
+    const urlParams = new URLSearchParams(location.search);
+    const searchQuery = urlParams.get('search');
+    
+    if (searchQuery) {
+      resultados = resultados.filter(producto => 
+        producto.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        producto.descripcion.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        producto.etiqueta.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        producto.categoria.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Luego aplicar los filtros normales
     if (filters.categoria) {
       resultados = resultados.filter(producto => 
         producto.categoria === filters.categoria
@@ -164,7 +172,6 @@ const Productos = () => {
     }
 
     if (filters.precio) {
-      // Lógica de filtrado por precio (simplificada)
       resultados = resultados.filter(producto => {
         const precioNum = parseInt(producto.precioActual.replace(/[^\d]/g, ''));
         switch (filters.precio) {
@@ -178,10 +185,9 @@ const Productos = () => {
     }
 
     if (filters.estado) {
-      // Mapeo simplificado de estado a etiqueta
       const estadoMap = {
         'nuevo': 'Nuevo',
-        'usado': 'Vintage', // Asumiendo que vintage es usado
+        'usado': 'Vintage',
         'vintage': 'Vintage'
       };
       resultados = resultados.filter(producto => 
@@ -192,6 +198,20 @@ const Productos = () => {
     setFilteredProducts(resultados);
   };
 
+  // Manejar cambios en los filtros
+  const handleFilterChange = (e) => {
+    const { id, value } = e.target;
+    setFilters(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  // Aplicar filtros (actualizada para incluir búsqueda)
+  const aplicarFiltros = () => {
+    aplicarFiltrosYBusqueda();
+  };
+
   // Limpiar filtros
   const limpiarFiltros = () => {
     setFilters({
@@ -199,10 +219,11 @@ const Productos = () => {
       precio: '',
       estado: ''
     });
-    setFilteredProducts(productos);
+    // Mantener la búsqueda si existe, solo limpiar filtros
+    aplicarFiltrosYBusqueda();
   };
 
-  // Agregar al carrito
+  // Agregar al carrito (se mantiene igual)
   const agregarAlCarrito = (producto) => {
     const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     const productoExistente = carrito.find(item => item.id === producto.id);
@@ -220,13 +241,37 @@ const Productos = () => {
     alert(`${producto.nombre} agregado al carrito`);
   };
 
+  // Función para obtener el término de búsqueda actual
+  const getSearchTerm = () => {
+    const urlParams = new URLSearchParams(location.search);
+    return urlParams.get('search') || '';
+  };
+
   return (
     <div className="productos">
-
       <main>
-        {/* Sección de Filtros */}
+        {/* Sección de Filtros - Agregar indicador de búsqueda */}
         <section className="filtros">
           <h2>Filtrar Productos</h2>
+          
+          {/* Mostrar término de búsqueda actual si existe */}
+          {getSearchTerm() && (
+            <div className="search-indicator">
+              <p>Buscando: "<strong>{getSearchTerm()}</strong>"</p>
+              <Link 
+                to="/productos" 
+                className="btn-limpiar-busqueda"
+                onClick={() => {
+                  // Limpiar la URL removiendo el parámetro search
+                  window.history.replaceState({}, '', '/productos');
+                  aplicarFiltrosYBusqueda();
+                }}
+              >
+                Limpiar búsqueda
+              </Link>
+            </div>
+          )}
+          
           <div className="filtros-container">
             <div className="filtro-grupo">
               <label htmlFor="categoria">Categoría:</label>
@@ -285,7 +330,31 @@ const Productos = () => {
 
         {/* Catálogo de Productos */}
         <section className="catalogo">
-          <h2>Productos Destacados</h2>
+          <h2>
+            {getSearchTerm() 
+              ? `Resultados de búsqueda para "${getSearchTerm()}"` 
+              : 'Productos Destacados'
+            }
+          </h2>
+          
+          {/* Mensaje cuando no hay resultados */}
+          {filteredProducts.length === 0 && (
+            <div className="sin-productos">
+              <p>
+                {getSearchTerm() 
+                  ? `No se encontraron productos para "${getSearchTerm()}"`
+                  : 'No hay productos que coincidan con los filtros seleccionados'
+                }
+              </p>
+              <button 
+                className="btn-limpiar" 
+                onClick={limpiarFiltros}
+              >
+                Ver todos los productos
+              </button>
+            </div>
+          )}
+          
           <div className="productos-grid">
             {filteredProducts.map(producto => (
               <article key={producto.id} className="producto">
@@ -320,8 +389,6 @@ const Productos = () => {
           </div>
         </section>
       </main>
-
-    
     </div>
   );
 };
