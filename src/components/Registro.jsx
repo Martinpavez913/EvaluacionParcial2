@@ -20,7 +20,7 @@ const Registro = () => {
     { id: 'rm', nombre: 'Región Metropolitana' },
     { id: 'v', nombre: 'Valparaíso' },
     { id: 'viii', nombre: 'Biobío' },
-    // Aquí puedes agregar más regiones
+    
   ]);
 
   const [comunas] = useState([
@@ -31,7 +31,7 @@ const Registro = () => {
     { id: 'viña-del-mar', nombre: 'Viña del Mar', regionId: 'v' },
     { id: 'concepcion', nombre: 'Concepción', regionId: 'viii' },
     { id: 'talcahuano', nombre: 'Talcahuano', regionId: 'viii' },
-    // Aquí puedes agregar más comunas
+    
   ]);
 
   const [comunasFiltradas, setComunasFiltradas] = useState([]);
@@ -136,7 +136,7 @@ const Registro = () => {
               />
             </div>
 
-            {/* Este campo ocupará todo el ancho disponible */}
+            
             <div className="form-group full-width">
               <label htmlFor="email">Correo electrónico:</label>
               <input 
@@ -165,7 +165,7 @@ const Registro = () => {
               </select>
             </div>
             
-            {/* Este campo también ocupará todo el ancho */}
+            
             <div className="form-group full-width">
               <label htmlFor="direccion">Dirección:</label>
               <input 
@@ -190,7 +190,7 @@ const Registro = () => {
               />
             </div>
             
-            {/* El botón de envío ocupará todo el ancho */}
+            
             <div className="form-group full-width">
               <button type="submit">Registrarse</button>
             </div>
