@@ -7,11 +7,6 @@ const Nosotros = () => {
     <div className="nosotros">
       {/* Main Content */}
       <main>
-        <section className="banner">
-          <h2>Sobre Nosotros</h2>
-          <p>Conoce la historia detrás de ColoColeccionables y nuestra pasión por el equipo más grande de Chile</p>
-        </section>
-
         <section className="about-content">
           <div className="about-section">
             <h2>Nuestra Historia</h2>

@@ -2427,3 +2427,145 @@ footer > div:last-child {
     bottom: 10px;
   }
 }
+
+/* ============================================= */
+/* == ESTILOS ESPECÍFICOS PARA PÁGINA NOSOTROS == */
+/* ============================================= */
+
+/* Contenedor principal de la página */
+.nosotros {
+  background-color: #f9f9f9; /* Un fondo gris muy claro para diferenciarla */
+  min-height: 100vh;
+}
+
+/* Contenido principal centrado y con márgenes */
+.nosotros main {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Sección de contenido principal */
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Espacio entre las secciones (Historia, Misión, etc.) */
+}
+
+/* Estilo para cada bloque de sección (Historia, Misión, etc.) */
+.about-section h2 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid #000;
+  display: inline-block; /* Para que el borde no ocupe todo el ancho */
+}
+
+.about-section p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #444; /* Un negro más suave para mejor lectura */
+  margin-bottom: 1rem;
+}
+
+/* Grid para la sección "¿Por Qué Elegirnos?" */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.feature-item {
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 1.5rem;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.feature-item h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: #000;
+}
+
+.feature-item p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+
+/* Sección de Llamada a la Acción (Call to Action) */
+.cta-section {
+  margin-top: 3rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #000 0%, #333 100%);
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+/* Aseguramos que el botón primario se vea bien en el CTA */
+.cta-section .btn-primary {
+  background-color: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.cta-section .btn-primary:hover {
+  background-color: transparent;
+  color: #fff;
+}
+
+
+/* ================================= */
+/* == RESPONSIVE PARA "NOSOTROS" == */
+/* ================================= */
+@media (max-width: 768px) {
+  .nosotros main {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .about-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .about-section p {
+    font-size: 1rem;
+  }
+
+  .cta-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.6rem;
+  }
+}
