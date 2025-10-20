@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useCarrito } from '../hooks/useCarrito';
 import '/src/App.css';
 
 const DetalleProducto = () => {
@@ -8,8 +9,12 @@ const DetalleProducto = () => {
   const [producto, setProducto] = useState(null);
   const [tallaSeleccionada, setTallaSeleccionada] = useState('');
   const [cantidad, setCantidad] = useState(1);
-  const [cartCount, setCartCount] = useState(0);
-
+  const { agregarAlCarrito, cantidadTotal } = useCarrito();
+  
+  const [producto, setProducto] = useState(null);
+  const [tallaSeleccionada, setTallaSeleccionada] = useState('');
+  const [cantidad, setCantidad] = useState(1);
+  
   // Datos de productos (mismo array que en Productos)
   const productos = [
     {
@@ -174,10 +179,7 @@ const DetalleProducto = () => {
   ];
 
   // Efecto para cargar el producto y el carrito
-  useEffect(() => {
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-    setCartCount(totalItems);
+  
 
     // Buscar el producto por ID
     const productoEncontrado = productos.find(p => p.id === parseInt(id));
@@ -188,7 +190,7 @@ const DetalleProducto = () => {
         setTallaSeleccionada(productoEncontrado.tallasDisponibles[0]);
       }
     }
-  }, [id]);
+  , [id]);
 
   // Agregar al carrito
   const agregarAlCarrito = () => {

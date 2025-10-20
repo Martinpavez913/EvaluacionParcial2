@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useCarrito } from '../hooks/useCarrito';
 import '/src/App.css';
 
 const Productos = () => {
-  const [cartCount, setCartCount] = useState(0);
+  const { agregarAlCarrito, cantidadTotal } = useCarrito();
   const [filters, setFilters] = useState({
     categoria: '',
     precio: '',
@@ -137,16 +138,6 @@ const Productos = () => {
     }
   ];
 
-  // Efecto para cargar el contador del carrito
-  useEffect(() => {
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-    setCartCount(totalItems);
-    
-    // Aplicar filtros iniciales (incluyendo búsqueda si existe)
-    aplicarFiltrosYBusqueda();
-  }, [location.search]); // Se ejecuta cuando cambia la URL
-
   // Función para aplicar filtros y búsqueda
   const aplicarFiltrosYBusqueda = () => {
     let resultados = productos;
@@ -198,6 +189,11 @@ const Productos = () => {
     setFilteredProducts(resultados);
   };
 
+  // Efecto para aplicar filtros cuando cambia la ubicación o los filtros
+  useEffect(() => {
+    aplicarFiltrosYBusqueda();
+  }, [location.search, filters]);
+
   // Manejar cambios en los filtros
   const handleFilterChange = (e) => {
     const { id, value } = e.target;
@@ -207,11 +203,6 @@ const Productos = () => {
     }));
   };
 
-  // Aplicar filtros (actualizada para incluir búsqueda)
-  const aplicarFiltros = () => {
-    aplicarFiltrosYBusqueda();
-  };
-
   // Limpiar filtros
   const limpiarFiltros = () => {
     setFilters({
@@ -219,25 +210,11 @@ const Productos = () => {
       precio: '',
       estado: ''
     });
-    // Mantener la búsqueda si existe, solo limpiar filtros
-    aplicarFiltrosYBusqueda();
   };
 
-  // Agregar al carrito (se mantiene igual)
-  const agregarAlCarrito = (producto) => {
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    const productoExistente = carrito.find(item => item.id === producto.id);
-    
-    if (productoExistente) {
-      productoExistente.cantidad += 1;
-    } else {
-      carrito.push({ ...producto, cantidad: 1 });
-    }
-    
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-    const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-    setCartCount(totalItems);
-    
+  // Agregar al carrito (CORREGIDO)
+  const handleAgregarAlCarrito = (producto) => {
+    agregarAlCarrito(producto);
     alert(`${producto.nombre} agregado al carrito`);
   };
 
@@ -318,9 +295,6 @@ const Productos = () => {
             </div>
             
             <div className="filtro-grupo">
-              <button type="button" className="btn-filtrar" onClick={aplicarFiltros}>
-                Aplicar Filtros
-              </button>
               <button type="button" className="btn-limpiar" onClick={limpiarFiltros}>
                 Limpiar Filtros
               </button>
@@ -379,7 +353,7 @@ const Productos = () => {
                   </Link>
                   <button 
                     className="btn-agregar-carrito"
-                    onClick={() => agregarAlCarrito(producto)}
+                    onClick={() => handleAgregarAlCarrito(producto)}
                   >
                     Agregar al Carrito
                   </button>
