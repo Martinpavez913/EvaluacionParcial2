@@ -2569,3 +2569,167 @@ footer > div:last-child {
     font-size: 1.6rem;
   }
 }
+
+/* ========================================= */
+/* == ESTILOS ESPECÍFICOS PARA PÁGINA REGISTRO == */
+/* ========================================= */
+
+/* Contenedor principal de la página */
+.registro {
+  background-color: #f9f9f9;
+  padding: 2rem 1rem;
+}
+
+/* Sección principal del formulario, diseñada como una tarjeta */
+.registro-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+/* Título y párrafo introductorio */
+.registro-section h2 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #000;
+}
+
+.registro-section > p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+}
+
+/* Contenedor del formulario con layout de Grid */
+#registroForm {
+  display: grid;
+  /* Dos columnas de igual tamaño */
+  grid-template-columns: repeat(2, 1fr);
+  /* Espacio entre filas y columnas */
+  gap: 1.5rem 2rem;
+}
+
+/* Estilos para cada grupo de label + input */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el select de comuna cuando está deshabilitado */
+.form-group select:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* Hacer que algunos campos ocupen las dos columnas */
+.form-group.full-width {
+  grid-column: 1 / -1; /* Ocupa desde la primera a la última columna */
+}
+
+/* Botón de envío */
+.form-group button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-group button:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Enlace para iniciar sesión */
+.registro-links {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.registro-links p {
+  color: #555;
+  font-size: 1rem;
+}
+
+.registro-links a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.registro-links a:hover {
+  text-decoration: underline;
+}
+
+/* ================================= */
+/* == RESPONSIVE PARA "REGISTRO" == */
+/* ================================= */
+
+/* Para tablets y dispositivos intermedios */
+@media (max-width: 920px) {
+  #registroForm {
+    gap: 1.5rem;
+  }
+}
+
+/* Para móviles */
+@media (max-width: 768px) {
+  .registro-section {
+    padding: 2rem 1.5rem;
+  }
+  
+  /* Cambiamos el grid a una sola columna */
+  #registroForm {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  /* Eliminamos la necesidad de la clase 'full-width' en móvil */
+  .form-group.full-width {
+    grid-column: auto;
+  }
+  
+  .registro-section h2 {
+    font-size: 2rem;
+  }
+}
