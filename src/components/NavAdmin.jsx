@@ -7,7 +7,6 @@ const NavAdmin = () => {
   const handleLogout = () => {
     // Lógica para cerrar sesión del administrador
     console.log('Cerrando sesión de administrador');
-    // Aquí iría la lógica real de logout (limpiar tokens, etc.)
     alert('Sesión de administrador cerrada');
     navigate('/');
   };
