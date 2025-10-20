@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCarrito } from '../hooks/useCarrito'; // ✅ Agregar este import
 
 const Nav = () => {
-    const [cartCount, setCartCount] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const navigate = useNavigate();
-
-    // Efecto para cargar el contador del carrito
-    useEffect(() => {
-        const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-        setCartCount(totalItems);
-    }, []);
+    
+    // ✅ Usar el hook useCarrito en lugar de localStorage directo
+    const { cantidadTotal } = useCarrito();
 
     // Función para manejar la búsqueda
     const handleSearch = (e) => {
@@ -72,8 +68,9 @@ const Nav = () => {
             </nav>
 
             <div className="header-right">
+                {/* ✅ Usar cantidadTotal del hook en lugar de cartCount */}
                 <Link to="/carrito" id="carrito-link">
-                    Carrito ({cartCount})
+                    Carrito ({cantidadTotal})
                 </Link>
                 <div className="auth-links">
                     <Link to="/inicio-sesion">Iniciar Sesión</Link> |

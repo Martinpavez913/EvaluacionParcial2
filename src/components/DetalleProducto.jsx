@@ -6,10 +6,7 @@ import '/src/App.css';
 const DetalleProducto = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [producto, setProducto] = useState(null);
-  const [tallaSeleccionada, setTallaSeleccionada] = useState('');
-  const [cantidad, setCantidad] = useState(1);
-  const { agregarAlCarrito, cantidadTotal } = useCarrito();
+  const { agregarAlCarrito } = useCarrito();
   
   const [producto, setProducto] = useState(null);
   const [tallaSeleccionada, setTallaSeleccionada] = useState('');
@@ -178,9 +175,8 @@ const DetalleProducto = () => {
     }
   ];
 
-  // Efecto para cargar el producto y el carrito
-  
-
+  // Efecto para cargar el producto
+  useEffect(() => {
     // Buscar el producto por ID
     const productoEncontrado = productos.find(p => p.id === parseInt(id));
     if (productoEncontrado) {
@@ -190,10 +186,10 @@ const DetalleProducto = () => {
         setTallaSeleccionada(productoEncontrado.tallasDisponibles[0]);
       }
     }
-  , [id]);
+  }, [id]);
 
-  // Agregar al carrito
-  const agregarAlCarrito = () => {
+  // Agregar al carrito (CORREGIDO - usando el hook)
+  const handleAgregarAlCarrito = () => {
     if (!producto) return;
 
     // Validar talla para productos de vestuario
@@ -202,38 +198,15 @@ const DetalleProducto = () => {
       return;
     }
 
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    
-    // Crear clave única que incluya talla si aplica
-    const claveProducto = producto.categoria === 'vestuario' 
-      ? `${producto.id}-${tallaSeleccionada}`
-      : producto.id.toString();
-
-    const productoExistente = carrito.find(item => 
-      item.clave === claveProducto
-    );
-    
-    if (productoExistente) {
-      productoExistente.cantidad += cantidad;
-    } else {
-      carrito.push({
-        ...producto,
-        clave: claveProducto,
-        cantidad: cantidad,
-        tallaSeleccionada: producto.categoria === 'vestuario' ? tallaSeleccionada : null
-      });
-    }
-    
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-    const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-    setCartCount(totalItems);
+    // Usar el hook useCarrito en lugar de localStorage directo
+    agregarAlCarrito(producto, tallaSeleccionada, cantidad);
     
     alert(`${producto.nombre} ${tallaSeleccionada ? `(Talla ${tallaSeleccionada})` : ''} agregado al carrito`);
   };
 
   // Comprar ahora
   const comprarAhora = () => {
-    agregarAlCarrito();
+    handleAgregarAlCarrito();
     navigate('/carrito'); // Redirigir al carrito
   };
 
@@ -288,6 +261,7 @@ const DetalleProducto = () => {
                     {producto.tallasDisponibles.map(talla => (
                       <button
                         key={talla}
+                        type="button"
                         className={`talla-option ${tallaSeleccionada === talla ? 'selected' : ''}`}
                         onClick={() => setTallaSeleccionada(talla)}
                       >
@@ -303,6 +277,7 @@ const DetalleProducto = () => {
                 <label>Cantidad:</label>
                 <div className="cantidad-controls">
                   <button 
+                    type="button"
                     onClick={() => setCantidad(prev => Math.max(1, prev - 1))}
                     disabled={cantidad <= 1}
                   >
@@ -310,6 +285,7 @@ const DetalleProducto = () => {
                   </button>
                   <span>{cantidad}</span>
                   <button 
+                    type="button"
                     onClick={() => setCantidad(prev => prev + 1)}
                     disabled={cantidad >= producto.stock}
                   >
@@ -323,7 +299,7 @@ const DetalleProducto = () => {
               <div className="detalle-actions">
                 <button 
                   className="btn-agregar-carrito"
-                  onClick={agregarAlCarrito}
+                  onClick={handleAgregarAlCarrito}
                 >
                   Agregar al Carrito
                 </button>

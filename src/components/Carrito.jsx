@@ -1,77 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useCarrito } from '../hooks/useCarrito';
 import { Link } from 'react-router-dom';
 import '/src/App.css';
 
 const Carrito = () => {
-  const [carrito, setCarrito] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Cargar carrito desde localStorage
-  useEffect(() => {
-    const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
-    setCarrito(carritoGuardado);
-    setLoading(false);
-  }, []);
-
-  // Actualizar localStorage cuando cambie el carrito
-  useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-  }, [carrito]);
-
-  // Actualizar cantidad de un producto
-  const actualizarCantidad = (clave, nuevaCantidad) => {
-    if (nuevaCantidad < 1) return;
-    
-    setCarrito(prevCarrito => 
-      prevCarrito.map(item => 
-        item.clave === clave ? { ...item, cantidad: nuevaCantidad } : item
-      )
-    );
-  };
-
-  // Eliminar producto del carrito
-  const eliminarProducto = (clave) => {
-    setCarrito(prevCarrito => 
-      prevCarrito.filter(item => item.clave !== clave)
-    );
-  };
-
-  // Calcular subtotal
-  const calcularSubtotal = () => {
-    return carrito.reduce((total, item) => {
-      const precio = parseInt(item.precioActual.replace(/[^\d]/g, ''));
-      return total + (precio * item.cantidad);
-    }, 0);
-  };
-
-  // Calcular total (podrías agregar impuestos, envío, etc.)
-  const calcularTotal = () => {
-    return calcularSubtotal();
-  };
+  const {
+    carrito,
+    eliminarProducto,
+    actualizarCantidad,
+    vaciarCarrito,
+    cantidadTotal,
+    totalPrecio
+  } = useCarrito();
 
   // Formatear precio
   const formatearPrecio = (precio) => {
     return `$${precio.toLocaleString('es-CL')}`;
   };
 
-  // Vaciar carrito
-  const vaciarCarrito = () => {
+  // Manejar vaciar carrito con confirmación
+  const handleVaciarCarrito = () => {
     if (window.confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
-      setCarrito([]);
+      vaciarCarrito();
     }
   };
-
-  if (loading) {
-    return (
-      <div className="carrito">
-        <main>
-          <div className="carrito-container">
-            <h2>Cargando carrito...</h2>
-          </div>
-        </main>
-      </div>
-    );
-  }
 
   if (carrito.length === 0) {
     return (
@@ -110,7 +61,7 @@ const Carrito = () => {
               <div className="carrito-header">
                 <h2>Productos ({carrito.length})</h2>
                 <button 
-                  onClick={vaciarCarrito}
+                  onClick={handleVaciarCarrito}
                   className="btn-vaciar-carrito"
                 >
                   Vaciar Carrito
@@ -138,6 +89,7 @@ const Carrito = () => {
                     <label>Cantidad:</label>
                     <div className="cantidad-controls">
                       <button 
+                        type="button"
                         onClick={() => actualizarCantidad(item.clave, item.cantidad - 1)}
                         disabled={item.cantidad <= 1}
                       >
@@ -145,6 +97,7 @@ const Carrito = () => {
                       </button>
                       <span>{item.cantidad}</span>
                       <button 
+                        type="button"
                         onClick={() => actualizarCantidad(item.clave, item.cantidad + 1)}
                       >
                         +
@@ -154,12 +107,15 @@ const Carrito = () => {
 
                   <div className="item-subtotal">
                     <p className="subtotal">
-                      {formatearPrecio(parseInt(item.precioActual.replace(/[^\d]/g, '')) * item.cantidad)}
+                      {formatearPrecio(
+                        parseInt(item.precioActual?.replace(/[^\d]/g, '') || '0') * item.cantidad
+                      )}
                     </p>
                   </div>
 
                   <div className="item-acciones">
                     <button 
+                      type="button"
                       onClick={() => eliminarProducto(item.clave)}
                       className="btn-eliminar"
                       title="Eliminar producto"
@@ -177,8 +133,8 @@ const Carrito = () => {
                 <h3>Resumen del Pedido</h3>
                 
                 <div className="resumen-linea">
-                  <span>Subtotal:</span>
-                  <span>{formatearPrecio(calcularSubtotal())}</span>
+                  <span>Productos ({cantidadTotal}):</span>
+                  <span>{formatearPrecio(totalPrecio)}</span>
                 </div>
                 
                 <div className="resumen-linea">
@@ -188,7 +144,7 @@ const Carrito = () => {
                 
                 <div className="resumen-linea total">
                   <span>Total:</span>
-                  <span>{formatearPrecio(calcularTotal())}</span>
+                  <span>{formatearPrecio(totalPrecio)}</span>
                 </div>
 
                 <div className="resumen-acciones">
@@ -202,8 +158,8 @@ const Carrito = () => {
                 </div>
 
                 <div className="resumen-beneficios">
-                  <p>Envio gratis en compras sobre $50.000</p>
-                  <p>Devolucion gratuita hasta 30 dias</p>
+                  <p>Envío gratis en compras sobre $50.000</p>
+                  <p>Devolución gratuita hasta 30 días</p>
                   <p>Pago seguro</p>
                 </div>
               </div>

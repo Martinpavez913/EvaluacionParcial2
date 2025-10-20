@@ -14,9 +14,11 @@ import AdminAgregarProducto from './components/AdminAgregarProducto';
 import AdminModificarProducto from './components/AdminModificarProducto';
 import AdminEliminarProducto from './components/AdminEliminarProducto';
 import Carrito from './components/Carrito';
+import { CarritoProvider } from "./context/CarritoContext";
 
 function App() {
   return (
+    <CarritoProvider>
     <Router>
       <Routes>
         {/* Rutas públicas (con Nav y Footer) */}
@@ -47,6 +49,7 @@ function App() {
         {/* Aquí agregarás las demás rutas después */}
       </Routes>
     </Router>
+    </CarritoProvider>
   );
 }
 
