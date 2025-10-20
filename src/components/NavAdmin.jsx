@@ -18,7 +18,6 @@ const NavAdmin = () => {
         {/* Logo */}
         <div className="logo-container">
           <Link to="/admin">
-            <img src="/Imagenes/logoconfondo.png" alt="Logo ColoColeccionables" className="logo" />
             <span className="admin-badge">Admin</span>
           </Link>
         </div>
