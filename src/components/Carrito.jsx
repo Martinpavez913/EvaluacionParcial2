@@ -1,4 +1,4 @@
-import { useCarrito } from '../hooks/useCarrito';
+import { useCarrito } from '../context/CarritoContext';
 import { Link } from 'react-router-dom';
 import '/src/App.css';
 

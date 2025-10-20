@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCarrito } from '../hooks/useCarrito'; // ✅ Agregar este import
+import { useCarrito } from '../context/CarritoContext';
 
 const Nav = () => {
     const [searchTerm, setSearchTerm] = useState('');
