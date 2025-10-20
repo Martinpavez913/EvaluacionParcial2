@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 /* RESET Y GENERAL */
 * {
     margin: 0;
@@ -6,7 +8,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif; /* ← ESTA ES LA LÍNEA QUE CAMBIAS */
     line-height: 1.6;
     color: #000;
     background-color: #ffffff;
