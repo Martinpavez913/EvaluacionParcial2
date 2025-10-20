@@ -62,8 +62,8 @@ describe('Componente Blogs', () => {
     expect(inputEmail.value).toBe('test@example.com');
   });
 
-  // Test 4: Prevenir envío del formulario de newsletter
-  // Test limpio para prevenir envío
+  // Test 4: Prevenir que envío del formulario de newsletter recargue la página
+  
 it('debería prevenir el envío del formulario de newsletter', () => {
   render(
     <CarritoProvider>
@@ -76,20 +76,20 @@ it('debería prevenir el envío del formulario de newsletter', () => {
   const form = screen.getByRole('form', { name: /Formulario Newsletter/i });
   const inputEmail = screen.getByPlaceholderText(/Ingresa tu correo electrónico/i);
 
-  // Cambiar valor del input
+  // Simulación de que el usuario escribe su información en el recuadro
   fireEvent.change(inputEmail, { target: { value: 'test@example.com' } });
   expect(inputEmail.value).toBe('test@example.com');
 
-  // Crear evento submit con spy
+  // Esta parte simula que el usuario envía efectivamente su formulario
   const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
   submitEvent.preventDefault = vi.fn();
 
   form.dispatchEvent(submitEvent);
 
-  // Verificar que preventDefault se llamó
+  // Aquí se verifica que la página no se recargó, el formulario se envío pero todo sigue igual
   expect(submitEvent.preventDefault).toHaveBeenCalled();
 
-  // Verificar que input mantiene valor después del submit
+  // Verificar que input mantiene valor después de ser enviado
   expect(inputEmail.value).toBe('test@example.com');
 });
 
