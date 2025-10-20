@@ -13,7 +13,7 @@ const Carrusel = () => {
       alt: "Camiseta Edición Especial 1997",
       title: "Productos de colección",
       description: "Revisa todos nuestros productos disponibles",
-      link: "/productos/1", // Ruta específica del producto
+      link: "/productos/", // Ruta específica del producto
       buttonText: "Ver Productos"
     },
     {
