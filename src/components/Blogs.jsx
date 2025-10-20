@@ -1,16 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useCarrito } from '../context/CarritoContext';
 import '/src/App.css';
 
 const Blogs = () => {
-  const [cartCount, setCartCount] = useState(0);
-
-  // Efecto para cargar el contador del carrito
-  useEffect(() => {
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-    setCartCount(totalItems);
-  }, []);
+  const { cantidadTotal } = useCarrito(); // Obtener la cantidad total de productos en el carrito
 
   // Datos de blogs/noticias
   const blogs = [
@@ -64,6 +57,7 @@ const Blogs = () => {
     <div className="blogs">
       {/* Main Content */}
       <main>
+
         <section className="blogs-grid-section">
           <h2>Últimas Noticias</h2>
           <div className="blogs-grid">
@@ -95,14 +89,19 @@ const Blogs = () => {
         <section className="newsletter-section">
           <h2>No Te Pierdas Ninguna Noticia</h2>
           <p>Suscríbete a nuestro newsletter y recibe las últimas actualizaciones directamente en tu email.</p>
-          <form onSubmit={(e) => e.preventDefault()} className="newsletter-form">
-            <input 
-              type="email" 
-              placeholder="Ingresa tu correo electrónico" 
-              required 
-            />
-            <button type="submit">Suscribirse</button>
+          <form 
+              className="newsletter-form" 
+              aria-label="Formulario Newsletter" 
+              onSubmit={(e) => e.preventDefault()}
+              >
+          <input 
+            type="email" 
+            placeholder="Ingresa tu correo electrónico" 
+            required 
+          />
+          <button type="submit">Suscribirse</button>
           </form>
+
         </section>
       </main>
     </div>
