@@ -5,7 +5,7 @@ import '/src/App.css';
 const Carrusel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Datos del carrusel - puedes modificar esto según tus necesidades
+  // Datos del carrusel
   const slides = [
     {
       id: 1,

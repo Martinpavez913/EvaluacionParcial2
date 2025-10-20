@@ -7,7 +7,7 @@ const Nav = () => {
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const navigate = useNavigate();
     
-    // ✅ Usar el hook useCarrito en lugar de localStorage directo
+    // usar context Carrito en lugar de localStorage directo
     const { cantidadTotal } = useCarrito();
 
     // Función para manejar la búsqueda
@@ -68,7 +68,7 @@ const Nav = () => {
             </nav>
 
             <div className="header-right">
-                {/* ✅ Usar cantidadTotal del hook en lugar de cartCount */}
+                {/*  Usar cantidadTotal del context */}
                 <Link to="/carrito" id="carrito-link">
                     Carrito ({cantidadTotal})
                 </Link>

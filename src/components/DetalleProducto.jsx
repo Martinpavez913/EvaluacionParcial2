@@ -188,7 +188,7 @@ const DetalleProducto = () => {
     }
   }, [id]);
 
-  // Agregar al carrito (CORREGIDO - usando el hook)
+  // Agregar al carrito
   const handleAgregarAlCarrito = () => {
     if (!producto) return;
 
@@ -198,7 +198,7 @@ const DetalleProducto = () => {
       return;
     }
 
-    // Usar el hook useCarrito en lugar de localStorage directo
+    // Usar el context useCarrito en lugar de localStorage directo
     agregarAlCarrito(producto, tallaSeleccionada, cantidad);
     
     alert(`${producto.nombre} ${tallaSeleccionada ? `(Talla ${tallaSeleccionada})` : ''} agregado al carrito`);

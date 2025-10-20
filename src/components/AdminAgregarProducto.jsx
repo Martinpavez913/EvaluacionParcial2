@@ -28,7 +28,7 @@ const AdminAgregarProducto = () => {
     e.preventDefault();
     console.log('Datos del producto:', formData);
     alert('Producto agregado correctamente (simulación)');
-    // Aquí iría la lógica para enviar a una API
+    
   };
 
   return (
