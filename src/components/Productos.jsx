@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useCarrito } from '../hooks/useCarrito';
+import { useCarrito } from '../context/CarritoContext';
 import '/src/App.css';
 
 const Productos = () => {
@@ -138,11 +138,9 @@ const Productos = () => {
     }
   ];
 
-  // Función para aplicar filtros y búsqueda
   const aplicarFiltrosYBusqueda = () => {
     let resultados = productos;
 
-    // Primero aplicar búsqueda si existe en la URL
     const urlParams = new URLSearchParams(location.search);
     const searchQuery = urlParams.get('search');
     
@@ -155,11 +153,8 @@ const Productos = () => {
       );
     }
 
-    // Luego aplicar los filtros normales
     if (filters.categoria) {
-      resultados = resultados.filter(producto => 
-        producto.categoria === filters.categoria
-      );
+      resultados = resultados.filter(producto => producto.categoria === filters.categoria);
     }
 
     if (filters.precio) {
@@ -176,62 +171,34 @@ const Productos = () => {
     }
 
     if (filters.estado) {
-      const estadoMap = {
-        'nuevo': 'Nuevo',
-        'usado': 'Vintage',
-        'vintage': 'Vintage'
-      };
-      resultados = resultados.filter(producto => 
-        producto.etiqueta === estadoMap[filters.estado]
-      );
+      const estadoMap = { 'nuevo': 'Nuevo', 'usado': 'Vintage', 'vintage': 'Vintage' };
+      resultados = resultados.filter(producto => producto.etiqueta === estadoMap[filters.estado]);
     }
 
     setFilteredProducts(resultados);
   };
 
-  // Efecto para aplicar filtros cuando cambia la ubicación o los filtros
-  useEffect(() => {
-    aplicarFiltrosYBusqueda();
-  }, [location.search, filters]);
+  useEffect(() => { aplicarFiltrosYBusqueda(); }, [location.search, filters]);
 
-  // Manejar cambios en los filtros
   const handleFilterChange = (e) => {
     const { id, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [id]: value
-    }));
+    setFilters(prev => ({ ...prev, [id]: value }));
   };
 
-  // Limpiar filtros
-  const limpiarFiltros = () => {
-    setFilters({
-      categoria: '',
-      precio: '',
-      estado: ''
-    });
-  };
+  const limpiarFiltros = () => setFilters({ categoria: '', precio: '', estado: '' });
 
-  // Agregar al carrito (CORREGIDO)
   const handleAgregarAlCarrito = (producto) => {
     agregarAlCarrito(producto);
     alert(`${producto.nombre} agregado al carrito`);
   };
 
-  // Función para obtener el término de búsqueda actual
-  const getSearchTerm = () => {
-    const urlParams = new URLSearchParams(location.search);
-    return urlParams.get('search') || '';
-  };
+  const getSearchTerm = () => new URLSearchParams(location.search).get('search') || '';
 
   return (
     <div className="productos">
       <main>
-        {/* Sección de Filtros - Agregar indicador de búsqueda */}
         <section className="filtros">
           <h2>Filtrar Productos</h2>
-          
-          {/* Mostrar término de búsqueda actual si existe */}
           {getSearchTerm() && (
             <div className="search-indicator">
               <p>Buscando: "<strong>{getSearchTerm()}</strong>"</p>
@@ -239,7 +206,6 @@ const Productos = () => {
                 to="/productos" 
                 className="btn-limpiar-busqueda"
                 onClick={() => {
-                  // Limpiar la URL removiendo el parámetro search
                   window.history.replaceState({}, '', '/productos');
                   aplicarFiltrosYBusqueda();
                 }}
@@ -248,15 +214,10 @@ const Productos = () => {
               </Link>
             </div>
           )}
-          
           <div className="filtros-container">
             <div className="filtro-grupo">
               <label htmlFor="categoria">Categoría:</label>
-              <select 
-                id="categoria" 
-                value={filters.categoria}
-                onChange={handleFilterChange}
-              >
+              <select id="categoria" value={filters.categoria} onChange={handleFilterChange}>
                 <option value="">Todas las categorías</option>
                 <option value="vestuario">Vestuario</option>
                 <option value="accesorios">Accesorios</option>
@@ -264,14 +225,9 @@ const Productos = () => {
                 <option value="figuras">Figuras</option>
               </select>
             </div>
-            
             <div className="filtro-grupo">
               <label htmlFor="precio">Rango de precio:</label>
-              <select 
-                id="precio" 
-                value={filters.precio}
-                onChange={handleFilterChange}
-              >
+              <select id="precio" value={filters.precio} onChange={handleFilterChange}>
                 <option value="">Todos los precios</option>
                 <option value="0-20000">$0 - $20.000</option>
                 <option value="20000-50000">$20.000 - $50.000</option>
@@ -279,21 +235,15 @@ const Productos = () => {
                 <option value="100000+">Más de $100.000</option>
               </select>
             </div>
-            
             <div className="filtro-grupo">
               <label htmlFor="estado">Estado:</label>
-              <select 
-                id="estado" 
-                value={filters.estado}
-                onChange={handleFilterChange}
-              >
+              <select id="estado" value={filters.estado} onChange={handleFilterChange}>
                 <option value="">Todos</option>
                 <option value="nuevo">Nuevo</option>
                 <option value="usado">Usado</option>
                 <option value="vintage">Vintage/Retro</option>
               </select>
             </div>
-            
             <div className="filtro-grupo">
               <button type="button" className="btn-limpiar" onClick={limpiarFiltros}>
                 Limpiar Filtros
@@ -302,33 +252,14 @@ const Productos = () => {
           </div>
         </section>
 
-        {/* Catálogo de Productos */}
         <section className="catalogo">
-          <h2>
-            {getSearchTerm() 
-              ? `Resultados de búsqueda para "${getSearchTerm()}"` 
-              : 'Productos Destacados'
-            }
-          </h2>
-          
-          {/* Mensaje cuando no hay resultados */}
+          <h2>{getSearchTerm() ? `Resultados de búsqueda para "${getSearchTerm()}"` : 'Productos Destacados'}</h2>
           {filteredProducts.length === 0 && (
             <div className="sin-productos">
-              <p>
-                {getSearchTerm() 
-                  ? `No se encontraron productos para "${getSearchTerm()}"`
-                  : 'No hay productos que coincidan con los filtros seleccionados'
-                }
-              </p>
-              <button 
-                className="btn-limpiar" 
-                onClick={limpiarFiltros}
-              >
-                Ver todos los productos
-              </button>
+              <p>{getSearchTerm() ? `No se encontraron productos para "${getSearchTerm()}"` : 'No hay productos que coincidan con los filtros seleccionados'}</p>
+              <button className="btn-limpiar" onClick={limpiarFiltros}>Ver todos los productos</button>
             </div>
           )}
-          
           <div className="productos-grid">
             {filteredProducts.map(producto => (
               <article key={producto.id} className="producto">
@@ -341,22 +272,10 @@ const Productos = () => {
                   <p>{producto.descripcion}</p>
                   <div className="producto-precio">
                     <span className="precio-actual">{producto.precioActual}</span>
-                    {producto.precioAnterior && (
-                      <span className="precio-anterior">{producto.precioAnterior}</span>
-                    )}
+                    {producto.precioAnterior && <span className="precio-anterior">{producto.precioAnterior}</span>}
                   </div>
-                  <Link 
-                    to={`/detalle-producto/${producto.id}`} 
-                    className="btn-ver-detalles"
-                  >
-                    Ver Detalles
-                  </Link>
-                  <button 
-                    className="btn-agregar-carrito"
-                    onClick={() => handleAgregarAlCarrito(producto)}
-                  >
-                    Agregar al Carrito
-                  </button>
+                  <Link to={`/detalle-producto/${producto.id}`} className="btn-ver-detalles">Ver Detalles</Link>
+                  <button className="btn-agregar-carrito" onClick={() => handleAgregarAlCarrito(producto)}>Agregar al Carrito</button>
                 </div>
               </article>
             ))}
