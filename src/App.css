@@ -306,8 +306,8 @@ footer > div:last-child {
     }
     
     .logo {
-        width: 60px;
-        height: 60px;
+        width: 150px;
+        height: 150px;
     }
     
     header div:first-child {
@@ -2790,8 +2790,8 @@ footer > div:last-child {
 }
 
 .logo-container .logo {
-  width: 45px; /* Logo más pequeño */
-  height: 45px;
+  width: 150px; /* Logo más pequeño */
+  height: 150px;
   object-fit: contain;
 }
 
