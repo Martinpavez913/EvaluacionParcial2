@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Footer from './Footer';
 
-// Wrapper component para proporcionar el Router
 const RenderWithRouter = ({ children }) => {
   return <Router>{children}</Router>;
 };
@@ -16,7 +15,6 @@ describe('Footer Component', () => {
       </RenderWithRouter>
     );
 
-    // Verificar que el footer se renderiza
     const footerElement = screen.getByRole('contentinfo');
     expect(footerElement).toBeDefined();
   });
@@ -28,13 +26,11 @@ describe('Footer Component', () => {
       </RenderWithRouter>
     );
 
-    // Verificar logo
     const logo = screen.getByAltText('Logo ColoColeccionables');
     expect(logo).toBeDefined();
     expect(logo.getAttribute('src')).toBe('/Imagenes/logoconfondo.png');
     expect(logo.className).toContain('logo');
 
-    // Verificar descripción
     const description = screen.getByText(/La tienda oficial de coleccionables del equipo más popular de Chile/i);
     expect(description).toBeDefined();
   });
@@ -46,7 +42,6 @@ describe('Footer Component', () => {
       </RenderWithRouter>
     );
 
-    // Verificar todos los enlaces de navegación
     const homeLink = screen.getByText('Home');
     const productosLink = screen.getByText('Productos');
     const nosotrosLink = screen.getByText('Nosotros');
