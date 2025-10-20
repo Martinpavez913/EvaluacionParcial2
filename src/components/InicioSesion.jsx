@@ -30,7 +30,7 @@ const InicioSesion = () => {
     e.preventDefault();
     console.log('Datos del formulario:', formData);
     
-    // Aquí irá la lógica de autenticación
+    
     // Por ahora solo un console.log
     alert('Inicio de sesión enviado (funcionalidad por implementar)');
   };
