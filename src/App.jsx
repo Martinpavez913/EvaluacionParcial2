@@ -20,31 +20,32 @@ function App() {
   return (
     <CarritoProvider>
       <Router>
-        {/* Nav siempre visible */}
-        <Nav />
-
-        {/* Rutas principales */}
         <Routes>
-          {/* Rutas públicas */}
-          <Route path="/" element={<Home />} />
-          <Route path="/inicio-sesion" element={<InicioSesion />} />
-          <Route path="/contacto" element={<Contacto />} />
-          <Route path="/productos" element={<Productos />} />
-          <Route path="/nosotros" element={<Nosotros />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/registro" element={<Registro />} />
-          <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
-          <Route path="/carrito" element={<Carrito />} />
+          {/* Rutas públicas con Nav y Footer */}
+          <Route path="/*" element={
+            <>
+              <Nav />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/inicio-sesion" element={<InicioSesion />} />
+                <Route path="/contacto" element={<Contacto />} />
+                <Route path="/productos" element={<Productos />} />
+                <Route path="/nosotros" element={<Nosotros />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/registro" element={<Registro />} />
+                <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
+                <Route path="/carrito" element={<Carrito />} />
+              </Routes>
+              <Footer />
+            </>
+          } />
 
-          {/* Rutas de administración */}
-          <Route path="/admin" element={<Admin />} />
+          {/* Rutas de administración sin Nav ni Footer global */}
+          <Route path="/admin/*" element={<Admin />} />
           <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
           <Route path="/admin/productos/editar" element={<AdminModificarProducto />} />
           <Route path="/admin/productos/eliminar" element={<AdminEliminarProducto />} />
         </Routes>
-
-        {/* Footer siempre visible */}
-        <Footer />
       </Router>
     </CarritoProvider>
   );
