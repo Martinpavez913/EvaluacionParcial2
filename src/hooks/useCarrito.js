@@ -3,17 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 export const useCarrito = () => {
   const [carrito, setCarrito] = useState([]);
 
-  // Sincronización entre pestañas/components
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
-      setCarrito(carritoGuardado);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
   // Cargar estado inicial desde localStorage
   useEffect(() => {
     const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
@@ -24,6 +13,17 @@ export const useCarrito = () => {
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
+
+  // Sincronización entre pestañas/components
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
+      setCarrito(carritoGuardado);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // Agregar al carrito
   const agregarAlCarrito = useCallback((producto, talla = null, cantidad = 1) => {
@@ -72,12 +72,19 @@ export const useCarrito = () => {
   // Calcular cantidad total
   const cantidadTotal = carrito.reduce((total, item) => total + item.cantidad, 0);
 
+  // Calcular total precio (agregué esto que suele ser útil)
+  const totalPrecio = carrito.reduce((total, item) => {
+    const precio = parseInt(item.precioActual.replace(/[^\d]/g, '')) || 0;
+    return total + (precio * item.cantidad);
+  }, 0);
+
   return {
     carrito,
     agregarAlCarrito,
     eliminarProducto,
     actualizarCantidad,
     vaciarCarrito,
-    cantidadTotal
+    cantidadTotal,
+    totalPrecio // Nuevo: para mostrar el total a pagar
   };
 };
