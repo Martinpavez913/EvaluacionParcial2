@@ -13,6 +13,7 @@ import Admin from './components/Admin';
 import AdminAgregarProducto from './components/AdminAgregarProducto';
 import AdminModificarProducto from './components/AdminModificarProducto';
 import AdminEliminarProducto from './components/AdminEliminarProducto';
+import Carrito from './components/Carrito';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/registro" element={<Registro />} />
               <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
+              <Route path="/carrito" element={<Carrito />} />
             </Routes>
             <Footer />
           </>
