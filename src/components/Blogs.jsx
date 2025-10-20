@@ -64,11 +64,6 @@ const Blogs = () => {
     <div className="blogs">
       {/* Main Content */}
       <main>
-        <section className="banner">
-          <h2>Blog ColoColeccionables</h2>
-          <p>Noticias, historias y consejos para los verdaderos coleccionistas del equipo más grande de Chile</p>
-        </section>
-
         <section className="blogs-grid-section">
           <h2>Últimas Noticias</h2>
           <div className="blogs-grid">
