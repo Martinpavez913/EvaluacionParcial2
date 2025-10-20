@@ -2733,3 +2733,146 @@ footer > div:last-child {
     font-size: 2rem;
   }
 }
+
+/* ============================================== */
+/* == ESTILOS MEJORADOS PARA PÁGINA INICIO SESIÓN == */
+/* ============================================== */
+
+.inicio-sesion {
+  background-color: #f9f9f9;
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  min-height: 100vh; /* Ocupa toda la altura de la vista */
+  box-sizing: border-box; /* Asegura que el padding no afecte la altura total */
+}
+
+/* El contenedor principal del formulario, estilo tarjeta */
+.login-section {
+  max-width: 450px; /* Un poco más angosto para formularios simples */
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px; /* Bordes más redondeados */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+/* Título y párrafo introductorio */
+.login-section h2 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #000;
+  /* Eliminamos el borde inferior para un look más limpio */
+  border-bottom: none;
+}
+
+.login-section > p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Estilos para cada grupo (label + input) */
+#loginForm .form-group {
+  margin-bottom: 1.8rem; /* Aumentamos el espacio entre campos */
+  display: flex;
+  flex-direction: column;
+}
+
+#loginForm .form-group label {
+  margin-bottom: 0.6rem;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+#loginForm .form-group input {
+  width: 100%;
+  padding: 0.9rem 1rem; /* Más padding interno para comodidad */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* Efecto de foco mejorado */
+#loginForm .form-group input:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Botón de envío más impactante */
+#loginForm .form-group button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #000 0%, #333 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#loginForm .form-group button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Enlaces inferiores (recuperar contraseña, crear cuenta) */
+.login-links {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.login-links p {
+  color: #555;
+  font-size: 1rem;
+}
+
+.login-links a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-links a:hover {
+  color: #555;
+  text-decoration: underline;
+}
+
+/* ======================================= */
+/* == RESPONSIVE PARA INICIO DE SESIÓN == */
+/* ======================================= */
+
+@media (max-width: 480px) {
+  .login-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-section h2 {
+    font-size: 1.8rem;
+  }
+
+  #loginForm .form-group input,
+  #loginForm .form-group button {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+}
