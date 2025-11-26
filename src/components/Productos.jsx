@@ -15,13 +15,13 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
   const location = useLocation();
 
-  useEffect(() =>{
-    obtenerProductos()
-    .then(data=>{
-      setProductos(data)
-      aplicarFiltrosYBusqueda()
+  useEffect(() => {
+  obtenerProductos()
+    .then(data => {
+      setProductos(data);
+      setFilteredProducts(data); 
     })
-  },[])
+}, []);
 
   const aplicarFiltrosYBusqueda = () => {
     let resultados = productos;
