@@ -1,27 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCarrito } from '../context/CarritoContext';
+import { useSession } from '../hooks/useSession';
 
 const Nav = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const navigate = useNavigate();
-    
-    // usar context Carrito en lugar de localStorage directo
+
     const { cantidadTotal } = useCarrito();
 
-    // Función para manejar la búsqueda
+    // ⬅️ USAMOS EL CONTEXT DE SESIÓN
+    const { userSession, isLogged, signOut } = useSession();
+
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            // Navegar a la página de productos con el término de búsqueda
             navigate(`/productos?search=${encodeURIComponent(searchTerm)}`);
             setSearchTerm('');
             setIsSearchVisible(false);
         }
     };
 
-    // Función para toggle de la barra de búsqueda en móvil
     const toggleSearch = () => {
         setIsSearchVisible(!isSearchVisible);
     };
@@ -30,11 +30,10 @@ const Nav = () => {
         <header>
             <div className="logo-container">
                 <Link to="/">
-                    <img src="/Imagenes/logoconfondo.png" alt="Logo ColoColeccionables" className="logo" />  
+                    <img src="/Imagenes/logoconfondo.png" alt="Logo" className="logo" />  
                 </Link>
             </div>
 
-            {/* Barra de búsqueda */}
             <div className="search-container">
                 <form onSubmit={handleSearch} className={`search-form ${isSearchVisible ? 'search-visible' : ''}`}>
                     <input
@@ -44,17 +43,9 @@ const Nav = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="search-input"
                     />
-                    <button type="submit" className="search-button">
-                        🔍
-                    </button>
+                    <button type="submit" className="search-button">🔍</button>
                 </form>
-                <button 
-                    className="search-toggle"
-                    onClick={toggleSearch}
-                    aria-label="Toggle search"
-                >
-                    🔍
-                </button>
+                <button className="search-toggle" onClick={toggleSearch}>🔍</button>
             </div>
 
             <nav>
@@ -68,14 +59,26 @@ const Nav = () => {
             </nav>
 
             <div className="header-right">
-                {/*  Usar cantidadTotal del context */}
+
                 <Link to="/carrito" id="carrito-link">
                     Carrito ({cantidadTotal})
                 </Link>
-                <div className="auth-links">
-                    <Link to="/inicio-sesion">Iniciar Sesión</Link> |
-                    <Link to="/registro">Registrarse</Link>
-                </div>
+
+                {/* 🔥 Si está logueado, mostrar BIENVENIDO y CERRAR SESIÓN */}
+                {isLogged ? (
+                    <div className="auth-links">
+                        <span>Bienvenido, <strong>{userSession.email}</strong></span>
+                        <button onClick={signOut} style={{ marginLeft: "10px" }}>
+                            Cerrar sesión
+                        </button>
+                    </div>
+                ) : (
+                    <div className="auth-links">
+                        <Link to="/inicio-sesion">Iniciar Sesión</Link> |
+                        <Link to="/registro">Registrarse</Link>
+                    </div>
+                )}
+
             </div>
         </header>
     );
