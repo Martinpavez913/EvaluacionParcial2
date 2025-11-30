@@ -1,9 +1,14 @@
+// src/components/InicioSesion.jsx
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "/src/App.css";
+import { useSessionContext } from "../context/sessionContext";
+import { ROUTE_PATHS } from "../utils/constants";
 
 const InicioSesion = () => {
   const navigate = useNavigate();
+  const { signIn } = useSessionContext();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -32,13 +37,21 @@ const InicioSesion = () => {
 
       const data = await response.json();
 
-      // Guardar sesión
+      // ✔ Guardar sesión global
+      signIn(data.user);
+
+      // ✔ Guardar token aparte
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
 
       alert("Sesión iniciada correctamente");
 
-      navigate("/"); // redirigir al home
+      // ✔ Si es admin → panel admin
+      if (data.user.role === "admin") {
+        navigate(ROUTE_PATHS.ADMIN);
+      } else {
+        navigate(ROUTE_PATHS.HOME);
+      }
+
     } catch (error) {
       console.error("Error en login:", error);
       alert("Error al conectarse con el servidor");
@@ -89,3 +102,4 @@ const InicioSesion = () => {
 };
 
 export default InicioSesion;
+

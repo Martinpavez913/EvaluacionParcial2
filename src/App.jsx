@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
@@ -15,39 +17,40 @@ import AdminModificarProducto from './components/AdminModificarProducto';
 import AdminEliminarProducto from './components/AdminEliminarProducto';
 import Carrito from './components/Carrito';
 import { CarritoProvider } from './context/CarritoContext';
+import { SessionProvider } from './context/sessionContext';
 
 function App() {
   return (
-    <CarritoProvider>
-      <Router>
-        <Routes>
-          {/* Rutas públicas con Nav y Footer */}
-          <Route path="/*" element={
-            <>
-              <Nav />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/inicio-sesion" element={<InicioSesion />} />
-                <Route path="/contacto" element={<Contacto />} />
-                <Route path="/productos" element={<Productos />} />
-                <Route path="/nosotros" element={<Nosotros />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/registro" element={<Registro />} />
-                <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
-                <Route path="/carrito" element={<Carrito />} />
-              </Routes>
-              <Footer />
-            </>
-          } />
+    <SessionProvider>
+      <CarritoProvider>
+        <Router>
+          <Routes>
+            <Route path="/*" element={
+              <>
+                <Nav />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/inicio-sesion" element={<InicioSesion />} />
+                  <Route path="/contacto" element={<Contacto />} />
+                  <Route path="/productos" element={<Productos />} />
+                  <Route path="/nosotros" element={<Nosotros />} />
+                  <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/registro" element={<Registro />} />
+                  <Route path="/detalle-producto/:id" element={<DetalleProducto />} />
+                  <Route path="/carrito" element={<Carrito />} />
+                </Routes>
+                <Footer />
+              </>
+            } />
 
-          {/* Rutas de administración sin Nav ni Footer global */}
-          <Route path="/admin/*" element={<Admin />} />
-          <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
-          <Route path="/admin/productos/editar" element={<AdminModificarProducto />} />
-          <Route path="/admin/productos/eliminar" element={<AdminEliminarProducto />} />
-        </Routes>
-      </Router>
-    </CarritoProvider>
+            <Route path="/admin/*" element={<Admin />} />
+            <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
+            <Route path="/admin/productos/editar" element={<AdminModificarProducto />} />
+            <Route path="/admin/productos/eliminar" element={<AdminEliminarProducto />} />
+          </Routes>
+        </Router>
+      </CarritoProvider>
+    </SessionProvider>
   );
 }
 
