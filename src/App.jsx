@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 import Layout from './layouts/Layout';
 
@@ -19,6 +20,7 @@ import AdminEliminarProducto from './components/AdminEliminarProducto';
 
 import { CarritoProvider } from './context/CarritoContext';
 import { SessionProvider } from './context/sessionContext';
+import ProtectedRoute from './protect/ProtectedRoute';
 
 function App() {
   return (
@@ -40,11 +42,14 @@ function App() {
               <Route path="/carrito" element={<Carrito />} />
             </Route>
 
-            {/* ==== RUTAS ADMIN (SIN NAV NI FOOTER) ==== */}
-            <Route path="/admin/*" element={<Admin />} />
-            <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
-            <Route path="/admin/productos/editar" element={<AdminModificarProducto />} />
-            <Route path="/admin/productos/eliminar" element={<AdminEliminarProducto />} />
+            {/* ==== RUTAS ADMIN PROTEGIDAS ==== */}
+            <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
+              <Route path="/admin/*" element={<Admin />} />
+              <Route path="/admin/productos/nuevo" element={<AdminAgregarProducto />} />
+              <Route path="/admin/productos/editar" element={<AdminModificarProducto />} />
+              <Route path="/admin/productos/eliminar" element={<AdminEliminarProducto />} />
+            </Route>
+
           </Routes>
         </Router>
       </CarritoProvider>

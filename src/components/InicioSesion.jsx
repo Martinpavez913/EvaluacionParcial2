@@ -37,21 +37,21 @@ const InicioSesion = () => {
 
       const data = await response.json();
 
-      // ✔ Guardar sesión global
+      // ✔ Guardar sesión completa en contexto global
       signIn(data.user);
 
-      // ✔ Guardar token aparte
+      // ✔ Guardar toda la sesión y token en localStorage
+      localStorage.setItem("userSession", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
 
       alert("Sesión iniciada correctamente");
 
-      // ✔ Si es admin → panel admin
+      // ✔ Redirigir según rol
       if (data.user.role === "admin") {
         navigate(ROUTE_PATHS.ADMIN);
       } else {
         navigate(ROUTE_PATHS.HOME);
       }
-
     } catch (error) {
       console.error("Error en login:", error);
       alert("Error al conectarse con el servidor");
@@ -102,4 +102,3 @@ const InicioSesion = () => {
 };
 
 export default InicioSesion;
-

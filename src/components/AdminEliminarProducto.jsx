@@ -1,206 +1,141 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import NavAdmin from './NavAdmin';
-import '/src/App.css';
+// src/components/Admin/AdminEliminarProducto.jsx
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import NavAdmin from "./NavAdmin";
 
 const AdminEliminarProducto = () => {
-  const [buscarId, setBuscarId] = useState('');
-  const [productoEncontrado, setProductoEncontrado] = useState(null);
-  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+  const [buscarId, setBuscarId] = useState("");
+  const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleBuscar = () => {
+  const token = localStorage.getItem("token");
+  const userSession = JSON.parse(localStorage.getItem("userSession"));
+
+  if (!userSession || userSession.role !== "admin") {
+    alert("No tienes permisos para acceder a esta sección.");
+    return null;
+  }
+
+  const handleBuscar = async () => {
     if (!buscarId) {
-      alert('Por favor ingrese un ID para buscar');
+      alert("Ingrese un ID válido");
       return;
     }
 
-    // Simulación de búsqueda de producto
-    console.log('Buscando producto con ID:', buscarId);
-    
-    // Simulamos que encontramos un producto
-    const productoSimulado = {
-      id: buscarId,
-      nombre: 'Camiseta Local 2024',
-      descripcion: 'Camiseta oficial de local temporada 2024. Material 100% poliéster, escudo bordado.',
-      precio: '$45.000',
-      categoria: 'camisetas',
-      estado: 'disponible',
-      imagen: '/Imagenes/camiseta-2024.jpg',
-      stock: '25',
-      fechaAgregado: '2024-01-15'
-    };
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:3000/productos/${buscarId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    setProductoEncontrado(productoSimulado);
-    alert(`Producto ${buscarId} encontrado`);
+      if (!response.ok) {
+        const err = await response.json();
+        alert(`Error: ${err.message}`);
+        setProducto(null);
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      setProducto(data);
+    } catch (error) {
+      console.error("Error al buscar producto:", error);
+      alert("Error al conectarse con el servidor");
+      setProducto(null);
+    }
+    setLoading(false);
   };
 
-  const handleEliminar = () => {
-    setMostrarConfirmacion(true);
-  };
+  const handleEliminar = async () => {
+    if (!producto) return;
+    const confirmar = window.confirm(`¿Seguro que quieres eliminar "${producto.nombre}"?`);
+    if (!confirmar) return;
 
-  const confirmarEliminacion = () => {
-    if (!productoEncontrado) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:3000/productos/${producto.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    console.log('Producto eliminado:', productoEncontrado.id);
-    alert(`Producto "${productoEncontrado.nombre}" eliminado correctamente (simulación)`);
-    
-    // Resetear todo
-    setBuscarId('');
-    setProductoEncontrado(null);
-    setMostrarConfirmacion(false);
-  };
+      if (!response.ok) {
+        const err = await response.json();
+        alert(`Error: ${err.message}`);
+        setLoading(false);
+        return;
+      }
 
-  const cancelarEliminacion = () => {
-    setMostrarConfirmacion(false);
-  };
-
-  const handleNuevaBusqueda = () => {
-    setBuscarId('');
-    setProductoEncontrado(null);
-    setMostrarConfirmacion(false);
+      alert(`Producto "${producto.nombre}" eliminado correctamente`);
+      setProducto(null);
+      setBuscarId("");
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+      alert("Error al conectarse con el servidor");
+    }
+    setLoading(false);
   };
 
   return (
     <div className="admin-layout">
-      {/* Header de administración */}
       <NavAdmin />
-      
       <div className="admin-container">
-        {/* Sidebar */}
         <aside className="admin-sidebar">
           <h3>Panel de Administración</h3>
           <ul>
-            <li>
-              <Link to="/admin">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/admin/productos">Gestión de Productos</Link>
-            </li>
-            <li>
-              <Link to="/admin/usuarios">Gestión de Usuarios</Link>
-            </li>
-            <li>
-              <Link to="/admin/pedidos">Pedidos</Link>
-            </li>
-            <li>
-              <Link to="/admin/estadisticas">Estadísticas</Link>
-            </li>
-            <li>
-              <Link to="/admin/configuracion">Configuración</Link>
-            </li>
+            <li><Link to="/admin">Dashboard</Link></li>
+            <li><Link to="/admin/productos">Gestión de Productos</Link></li>
+            <li><Link to="/admin/usuarios">Gestión de Usuarios</Link></li>
+            <li><Link to="/admin/pedidos">Pedidos</Link></li>
+            <li><Link to="/admin/estadisticas">Estadísticas</Link></li>
+            <li><Link to="/admin/configuracion">Configuración</Link></li>
           </ul>
         </aside>
 
-        {/* Contenido principal */}
         <main className="admin-main">
           <section className="admin-form-section">
             <h2>Eliminar Producto</h2>
-            <p>Busque un producto por ID para eliminarlo del catálogo.</p>
-            
-            {/* Búsqueda de producto */}
-            <div className="form-group">
-              <label htmlFor="buscar-id">Buscar producto por ID:</label>
-              <div className="buscar-container">
-                <input 
-                  type="text" 
-                  id="buscar-id" 
+
+            {/* Búsqueda */}
+            <div className="producto-form">
+              <div className="form-group">
+                <label>ID del producto:</label>
+                <input
+                  type="text"
+                  name="buscarId"
                   value={buscarId}
                   onChange={(e) => setBuscarId(e.target.value)}
-                  placeholder="Ingrese ID del producto"
-                  disabled={productoEncontrado && !mostrarConfirmacion}
                 />
-                <button 
-                  type="button" 
-                  className="btn-buscar"
-                  onClick={handleBuscar}
-                  disabled={productoEncontrado && !mostrarConfirmacion}
-                >
-                  Buscar
+              </div>
+              <button onClick={handleBuscar} disabled={loading}>
+                {loading ? "Buscando..." : "Buscar"}
+              </button>
+            </div>
+
+            {/* Producto encontrado */}
+            {producto && (
+              <div className="producto-form">
+                <h3>Producto encontrado</h3>
+                <p><strong>ID:</strong> {producto.id}</p>
+                <p><strong>Nombre:</strong> {producto.nombre}</p>
+                <p><strong>Descripción:</strong> {producto.descripcion}</p>
+                <p><strong>Precio:</strong> {producto.precioActual}</p>
+                <p><strong>Categoría:</strong> {producto.categoria}</p>
+                <p><strong>Stock:</strong> {producto.stock}</p>
+
+                <button onClick={handleEliminar} disabled={loading}>
+                  {loading ? "Eliminando..." : "Eliminar Producto"}
                 </button>
               </div>
-            </div>
-            
-            {/* Información del producto encontrado */}
-            {productoEncontrado && !mostrarConfirmacion && (
-              <div className="producto-info">
-                <h3>Producto Encontrado</h3>
-                <div className="producto-detalle">
-                  <div className="producto-imagen">
-                    <img src={productoEncontrado.imagen} alt={productoEncontrado.nombre} />
-                  </div>
-                  <div className="producto-datos">
-                    <p><strong>ID:</strong> {productoEncontrado.id}</p>
-                    <p><strong>Nombre:</strong> {productoEncontrado.nombre}</p>
-                    <p><strong>Descripción:</strong> {productoEncontrado.descripcion}</p>
-                    <p><strong>Precio:</strong> {productoEncontrado.precio}</p>
-                    <p><strong>Categoría:</strong> {productoEncontrado.categoria}</p>
-                    <p><strong>Estado:</strong> {productoEncontrado.estado}</p>
-                    <p><strong>Stock:</strong> {productoEncontrado.stock} unidades</p>
-                    <p><strong>Fecha de agregado:</strong> {productoEncontrado.fechaAgregado}</p>
-                  </div>
-                </div>
-                
-                <div className="advertencia-eliminar">
-                  <h4>Advertencia</h4>
-                  <p>Esta acción no se puede deshacer. El producto será eliminado permanentemente del sistema.</p>
-                </div>
-                
-                <div className="form-actions">
-                  <button 
-                    type="button" 
-                    className="btn-delete-confirm"
-                    onClick={handleEliminar}
-                  >
-                    Eliminar Producto
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn-cancel"
-                    onClick={handleNuevaBusqueda}
-                  >
-                    Buscar Otro Producto
-                  </button>
-                </div>
-              </div>
             )}
-            
-            {/* Confirmación de eliminación */}
-            {mostrarConfirmacion && productoEncontrado && (
-              <div className="confirmacion-eliminar">
-                <h3>¿Está seguro de eliminar este producto?</h3>
-                <div className="producto-resumen">
-                  <p><strong>{productoEncontrado.nombre}</strong> (ID: {productoEncontrado.id})</p>
-                  <p>{productoEncontrado.descripcion}</p>
-                </div>
-                
-                <div className="advertencia-eliminar critica">
-                  <h4>ACCIÓN IRREVERSIBLE</h4>
-                  <p>Esta acción eliminará permanentemente el producto y toda su información asociada.</p>
-                </div>
-                
-                <div className="form-actions confirmacion-buttons">
-                  <button 
-                    type="button" 
-                    className="btn-delete-final"
-                    onClick={confirmarEliminacion}
-                  >
-                    Sí, Eliminar Permanentemente
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn-cancel"
-                    onClick={cancelarEliminacion}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </div>
-            )}
-            
+
             <div className="back-link">
-              <Link to="/admin" className="btn-back">
-                Volver al Panel de Administración
-              </Link>
+              <Link to="/admin">← Volver al Panel de Administración</Link>
             </div>
           </section>
         </main>
