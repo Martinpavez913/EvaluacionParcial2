@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCarrito } from '../context/CarritoContext';
-import { useSession } from '../hooks/useSession';
+import { useSessionContext } from '../context/sessionContext';
+
+
 
 const Nav = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -11,7 +13,7 @@ const Nav = () => {
     const { cantidadTotal } = useCarrito();
 
     // ⬅️ USAMOS EL CONTEXT DE SESIÓN
-    const { userSession, isLogged, signOut } = useSession();
+    const { userSession, isLogged, signOut } = useSessionContext();
 
     const handleSearch = (e) => {
         e.preventDefault();

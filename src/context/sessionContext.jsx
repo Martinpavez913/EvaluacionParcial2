@@ -1,4 +1,4 @@
-// src/context/SessionContext.jsx
+// src/context/sessionContext.jsx
 import { createContext, useContext } from "react";
 import { useSession } from "../hooks/useSession";
 
