@@ -3293,3 +3293,393 @@ footer > div:last-child {
     font-size: 2rem;
   }
 }
+
+/* ============================================== */
+/* === PÁGINA: DETALLE DE PRODUCTO (NUEVO) ==== */
+/* ============================================== */
+
+.detalle-producto {
+  background-color: #f9f9f9;
+  padding: 2rem 1rem;
+  min-height: 80vh;
+}
+
+/* Reutilizamos estructura de contenedor */
+.detalle-container {
+  max-width: 1200px; 
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* --- BREADCRUMB --- */
+.breadcrumb {
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: #666;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.breadcrumb a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #666;
+  font-weight: bold;
+}
+
+/* --- LAYOUT PRINCIPAL --- */
+.detalle-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 50% - 50% */
+  gap: 3rem;
+  margin-bottom: 4rem;
+  align-items: start;
+}
+
+/* --- IMAGEN --- */
+.detalle-imagen {
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.detalle-imagen img {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  object-fit: contain; /* Para que se vea completa */
+  display: block;
+}
+
+/* Etiqueta sobre la imagen */
+.producto-etiqueta {
+  position: absolute;
+  top: 15px;
+  right: 15px; /* Alineado a la derecha como en tus tarjetas */
+  background-color: #000;
+  color: #fff;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+/* --- INFO DEL PRODUCTO --- */
+.detalle-info h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: #000;
+}
+
+.detalle-descripcion-corta {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Precios */
+.detalle-precio {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.detalle-precio .precio-actual {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.detalle-precio .precio-anterior {
+  font-size: 1.2rem;
+  color: #999;
+  text-decoration: line-through;
+}
+
+/* Selectores (Talla y Cantidad) */
+.talla-selector, .cantidad-selector {
+  margin-bottom: 2rem;
+}
+
+.talla-selector label, .cantidad-selector label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  color: #000;
+}
+
+/* Opciones de Talla */
+.tallas-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.talla-option {
+  background: #fff;
+  border: 1px solid #ccc;
+  min-width: 50px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 0 1rem;
+}
+
+.talla-option:hover {
+  border-color: #000;
+}
+
+.talla-option.selected {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Control de Cantidad */
+.cantidad-controls {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.cantidad-controls button {
+  background: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: #000;
+}
+
+.cantidad-controls button:hover:not(:disabled) {
+  background-color: #eee;
+}
+
+.cantidad-controls span {
+  min-width: 40px;
+  text-align: center;
+  font-weight: bold;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  line-height: 40px;
+}
+
+.stock-info {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.detalle-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.detalle-actions button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+/* Botón Comprar (Principal) */
+.btn-comprar-ahora {
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #000;
+}
+
+.btn-comprar-ahora:hover {
+  background-color: #333;
+  border-color: #333;
+  transform: translateY(-2px);
+}
+
+/* Botón Carrito (Secundario) */
+.btn-agregar-carrito {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #000 !important; /* Importante para sobreescribir estilos genéricos */
+}
+
+.btn-agregar-carrito:hover {
+  background-color: #000;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* --- CARACTERÍSTICAS Y DESCRIPCIÓN --- */
+.detalle-caracteristicas {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.detalle-caracteristicas h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #000;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+.detalle-caracteristicas ul {
+  list-style: none;
+  padding-left: 0.5rem;
+}
+
+.detalle-caracteristicas li {
+  margin-bottom: 0.5rem;
+  color: #444;
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.detalle-caracteristicas li::before {
+  content: "•";
+  color: #000;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.detalle-descripcion-extendida {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #eee;
+}
+
+.detalle-descripcion-extendida h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #000;
+}
+
+.detalle-descripcion-extendida p {
+  line-height: 1.8;
+  color: #444;
+  font-size: 1.05rem;
+}
+
+/* --- PRODUCTOS RELACIONADOS --- */
+.productos-relacionados {
+  margin-top: 4rem;
+  border-top: 2px solid #000;
+  padding-top: 2rem;
+}
+
+.productos-relacionados h3 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #000;
+}
+
+/* Usamos grid para relacionados */
+.relacionados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+/* Tarjeta simple para relacionados */
+.producto-relacionado {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-relacionado:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.producto-relacionado img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.producto-relacionado h4 {
+  padding: 1rem 1rem 0.5rem;
+  margin: 0;
+  font-size: 1rem;
+  color: #000;
+}
+
+.producto-relacionado .precio-relacionado {
+  padding: 0 1rem 1rem;
+  font-weight: bold;
+  color: #000;
+  font-size: 1.1rem;
+}
+
+/* --- RESPONSIVE DETALLE (Móvil) --- */
+@media (max-width: 768px) {
+  .detalle-container {
+    padding: 1rem;
+  }
+
+  .detalle-content {
+    grid-template-columns: 1fr; /* Una columna */
+    gap: 2rem;
+  }
+  
+  .detalle-info h1 {
+    font-size: 1.8rem;
+  }
+  
+  .detalle-precio .precio-actual {
+    font-size: 1.8rem;
+  }
+
+  .detalle-actions {
+    flex-direction: column; 
+  }
+}
