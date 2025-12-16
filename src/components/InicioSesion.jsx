@@ -1,87 +1,102 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import '/src/App.css'; 
+// src/components/InicioSesion.jsx
+
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "/src/App.css";
+import { useSessionContext } from "../context/sessionContext";
+import { ROUTE_PATHS } from "../utils/constants";
 
 const InicioSesion = () => {
-  const [cartCount, setCartCount] = useState(0);
+  const navigate = useNavigate();
+  const { signIn } = useSessionContext();
+
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
-  // Efecto para cargar el contador del carrito
-  useEffect(() => {
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-    setCartCount(totalItems);
-  }, []);
-
-  // Manejar cambios en los inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Manejar envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos del formulario:', formData);
-    
-    
-    // Por ahora solo un console.log
-    alert('Inicio de sesión enviado (funcionalidad por implementar)');
+
+    try {
+      const response = await fetch("http://localhost:3000/autenticador/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        alert("Credenciales incorrectas");
+        return;
+      }
+
+      const data = await response.json();
+
+      // ✔ Guardar sesión completa en contexto global
+      signIn(data.user);
+
+      // ✔ Guardar toda la sesión y token en localStorage
+      localStorage.setItem("userSession", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+
+      alert("Sesión iniciada correctamente");
+
+      // ✔ Redirigir según rol
+      if (data.user.role === "admin") {
+        navigate(ROUTE_PATHS.ADMIN);
+      } else {
+        navigate(ROUTE_PATHS.HOME);
+      }
+    } catch (error) {
+      console.error("Error en login:", error);
+      alert("Error al conectarse con el servidor");
+    }
   };
 
   return (
     <div className="inicio-sesion">
-
-      {/* Main Content */}
       <main>
         <section className="login-section">
           <h2>Iniciar Sesión</h2>
-          <p>Ingresa a tu cuenta para acceder a beneficios exclusivos y realizar compras en nuestra tienda.</p>
-          
-          <form id="loginForm" onSubmit={handleSubmit}>
+
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="email">Correo electrónico:</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email" 
+              <label>Correo electrónico</label>
+              <input
+                type="email"
+                name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                required 
+                required
               />
             </div>
-            
+
             <div className="form-group">
-              <label htmlFor="password">Contraseña:</label>
-              <input 
-                type="password" 
-                id="password" 
-                name="password" 
+              <label>Contraseña</label>
+              <input
+                type="password"
+                name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                required 
+                required
               />
             </div>
-            
-            <div className="form-group">
-              <button type="submit">Iniciar Sesión</button>
-            </div>
+
+            <button type="submit">Iniciar Sesión</button>
           </form>
-          
+
           <div className="login-links">
-            <p>¿Olvidaste tu contraseña? <Link to="/recuperar-password">Recupérala aquí</Link></p>
-            <p>¿No tienes una cuenta? <Link to="/registro">Regístrate aquí</Link></p>
+            <p>
+              ¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link>
+            </p>
           </div>
         </section>
       </main>
-
-  
     </div>
   );
 };

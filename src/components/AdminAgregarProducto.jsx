@@ -1,213 +1,160 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import NavAdmin from './NavAdmin';
-import '/src/App.css';
+// src/components/Admin/AgregarProducto.jsx
+
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import NavAdmin from "./NavAdmin"; // Ajusta según tu estructura de componentes
 
 const AdminAgregarProducto = () => {
   const [formData, setFormData] = useState({
-    id: '',
-    nombre: '',
-    descripcion: '',
-    precio: '',
-    categoria: '',
-    estado: '',
-    imagenes: '',
-    talla: '',
-    stock: ''
+    nombre: "",
+    descripcion: "",
+    descripcionLarga: "",
+    precioActual: "",
+    precioAnterior: "",
+    imagen: "",
+    alt: "",
+    etiqueta: "",
+    categoria: "",
+    tallasDisponibles: "",
+    stock: 0,
+    caracteristicas: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos del producto:', formData);
-    alert('Producto agregado correctamente (simulación)');
-    
+    setLoading(true);
+
+    const userSession = JSON.parse(localStorage.getItem("userSession"));
+    const token = localStorage.getItem("token");
+
+    if (!userSession || userSession.role !== "admin") {
+      alert("No tienes permisos para añadir productos.");
+      setLoading(false);
+      return;
+    }
+
+    const body = {
+      ...formData,
+      tallasDisponibles: formData.tallasDisponibles
+        ? formData.tallasDisponibles.split(",").map((t) => t.trim())
+        : [],
+      caracteristicas: formData.caracteristicas
+        ? formData.caracteristicas.split(",").map((c) => c.trim())
+        : [],
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/productos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        alert(`Error: ${err.message}`);
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Producto agregado:", data);
+      alert("Producto agregado correctamente");
+
+      setFormData({
+        nombre: "",
+        descripcion: "",
+        descripcionLarga: "",
+        precioActual: "",
+        precioAnterior: "",
+        imagen: "",
+        alt: "",
+        etiqueta: "",
+        categoria: "",
+        tallasDisponibles: "",
+        stock: 0,
+        caracteristicas: "",
+      });
+    } catch (error) {
+      console.error("Error al agregar producto:", error);
+      alert("Error al conectarse con el servidor");
+    }
+
+    setLoading(false);
   };
 
   return (
     <div className="admin-layout">
-      {/* Header de administración */}
       <NavAdmin />
-      
       <div className="admin-container">
-        {/* Sidebar */}
         <aside className="admin-sidebar">
           <h3>Panel de Administración</h3>
           <ul>
-            <li>
-              <Link to="/admin">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/admin/productos">Gestión de Productos</Link>
-            </li>
-            <li>
-              <Link to="/admin/usuarios">Gestión de Usuarios</Link>
-            </li>
-            <li>
-              <Link to="/admin/pedidos">Pedidos</Link>
-            </li>
-            <li>
-              <Link to="/admin/estadisticas">Estadísticas</Link>
-            </li>
-            <li>
-              <Link to="/admin/configuracion">Configuración</Link>
-            </li>
+            <li><Link to="/admin">Dashboard</Link></li>
+            <li><Link to="/admin/productos">Gestión de Productos</Link></li>
+            <li><Link to="/admin/usuarios">Gestión de Usuarios</Link></li>
+            <li><Link to="/admin/pedidos">Pedidos</Link></li>
+            <li><Link to="/admin/estadisticas">Estadísticas</Link></li>
+            <li><Link to="/admin/configuracion">Configuración</Link></li>
           </ul>
         </aside>
 
-        {/* Contenido principal */}
         <main className="admin-main">
           <section className="admin-form-section">
             <h2>Añadir Nuevo Producto</h2>
-            <p>Complete el formulario para agregar un nuevo producto al catálogo.</p>
-            
+
             <form onSubmit={handleSubmit} className="producto-form">
-              <div className="form-group">
-                <label htmlFor="id">ID del Producto:</label>
-                <input 
-                  type="text" 
-                  id="id" 
-                  name="id" 
-                  value={formData.id}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="nombre">Nombre del Producto:</label>
-                <input 
-                  type="text" 
-                  id="nombre" 
-                  name="nombre" 
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="descripcion">Descripción:</label>
-                <textarea 
-                  id="descripcion" 
-                  name="descripcion" 
-                  rows="4" 
-                  value={formData.descripcion}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="precio">Precio ($):</label>
-                <input 
-                  type="number" 
-                  id="precio" 
-                  name="precio" 
-                  min="0" 
-                  step="0.01" 
-                  value={formData.precio}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="categoria">Categoría:</label>
-                <select 
-                  id="categoria" 
-                  name="categoria" 
-                  value={formData.categoria}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Seleccione una categoría</option>
-                  <option value="figuras">Figuras de Acción</option>
-                  <option value="camisetas">Camisetas</option>
-                  <option value="accesorios">Accesorios</option>
-                  <option value="coleccionables">Coleccionables</option>
-                  <option value="otros">Otros</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="estado">Estado:</label>
-                <select 
-                  id="estado" 
-                  name="estado" 
-                  value={formData.estado}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Seleccione un estado</option>
-                  <option value="disponible">Disponible</option>
-                  <option value="agotado">Agotado</option>
-                  <option value="pronto-lanzamiento">Próximo Lanzamiento</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="imagenes">Imágenes (URLs separadas por coma):</label>
-                <textarea 
-                  id="imagenes" 
-                  name="imagenes" 
-                  rows="3" 
-                  value={formData.imagenes}
-                  onChange={handleChange}
-                  placeholder="imagenes/figura-zamorano.jpg, imagenes/figura-zamorano-2.jpg" 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="talla">Talla (si aplica):</label>
-                <select 
-                  id="talla" 
-                  name="talla" 
-                  value={formData.talla}
-                  onChange={handleChange}
-                >
-                  <option value="">No aplica</option>
-                  <option value="XS">XS</option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                  <option value="Única">Única</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="stock">Stock disponible:</label>
-                <input 
-                  type="number" 
-                  id="stock" 
-                  name="stock" 
-                  min="0" 
-                  value={formData.stock}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              
-              <div className="form-actions">
-                <button type="submit" className="btn-submit">
-                  Añadir Producto
-                </button>
-              </div>
+              {[
+                { label: "Nombre", name: "nombre", required: true },
+                { label: "Descripción corta", name: "descripcion" },
+                { label: "Descripción larga", name: "descripcionLarga", textarea: true },
+                { label: "Precio actual", name: "precioActual", required: true },
+                { label: "Precio anterior", name: "precioAnterior" },
+                { label: "Imagen (URL)", name: "imagen", required: true },
+                { label: "Alt (texto alternativo)", name: "alt" },
+                { label: "Etiqueta", name: "etiqueta" },
+                { label: "Categoría", name: "categoria", required: true },
+                { label: "Tallas disponibles (separadas por coma)", name: "tallasDisponibles" },
+                { label: "Stock", name: "stock", type: "number" },
+                { label: "Características (separadas por coma)", name: "caracteristicas" },
+              ].map((field) => (
+                <div className="form-group" key={field.name}>
+                  <label>{field.label}:</label>
+                  {field.textarea ? (
+                    <textarea
+                      name={field.name}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    <input
+                      name={field.name}
+                      type={field.type || "text"}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                      required={field.required || false}
+                    />
+                  )}
+                </div>
+              ))}
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Agregando..." : "Añadir Producto"}
+              </button>
             </form>
-            
+
             <div className="back-link">
-              <Link to="/admin" className="btn-back">
-                ← Volver al Panel de Administración
-              </Link>
+              <Link to="/admin">← Volver al Panel de Administración</Link>
             </div>
           </section>
         </main>
